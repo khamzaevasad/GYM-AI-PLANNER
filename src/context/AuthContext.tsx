@@ -6,12 +6,15 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { User } from "../types";
+import type { User, userProfiles } from "../types";
 import { authClient } from "../lib/auth";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  saveProfile: (
+    profile: Omit<userProfiles, "userId" | "updatedAt">,
+  ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
