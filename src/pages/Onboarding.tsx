@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Textarea } from "../components/ui/Textarea";
 import { Button } from "../components/ui/Button";
 import { ArrowRight } from "lucide-react";
+import type { UserProfile } from "../types";
 
 const goalOptions = [
   { value: "bulk", label: "Build Muscle {Bulk}" },
@@ -69,6 +70,17 @@ export default function Onboarding() {
 
   async function handleQuestionnaire(e: React.SubmitEvent) {
     e.preventDefault();
+    const profile: Omit<UserProfile, "userId" | "updatedAt"> = {
+      goal: formData.goal as UserProfile["goal"],
+      experience: formData.experience as UserProfile["experience"],
+      daysPerWeek: parseInt(formData.daysPerWeek),
+      sessionLength: parseInt(formData.sessionLength),
+      equipment: formData.equipment as UserProfile["equipment"],
+      injuries: formData.injuries || undefined,
+      preferredSplit: formData.preferredSplit as UserProfile["preferredSplit"],
+    };
+
+    saveProfile(profile);
   }
   if (!user) {
     return <RedirectToSignIn />;
@@ -151,4 +163,7 @@ export default function Onboarding() {
       </div>
     </SignedIn>
   );
+}
+function saveProfile(profile: Omit<UserProfile, "userId" | "updatedAt">) {
+  throw new Error("Function not implemented.");
 }

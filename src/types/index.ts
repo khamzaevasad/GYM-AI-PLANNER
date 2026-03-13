@@ -4,7 +4,7 @@ export interface User {
   createdAt: string;
 }
 
-export interface userProfiles {
+export interface UserProfile {
   userId: string;
   goal: "cut" | "bulk" | "recomp" | "strength" | "endurance";
   experience: "beginner" | "intermediate" | "advanced";

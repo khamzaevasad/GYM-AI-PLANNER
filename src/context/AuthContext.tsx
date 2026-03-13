@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
@@ -6,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { User, userProfiles } from "../types";
+import type { User, UserProfile } from "../types";
 import { authClient } from "../lib/auth";
 import { api } from "../lib/api";
 
@@ -14,7 +15,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   saveProfile: (
-    profile: Omit<userProfiles, "userId" | "updatedAt">,
+    profile: Omit<UserProfile, "userId" | "updatedAt">,
   ) => Promise<void>;
 }
 
@@ -40,12 +41,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     loadUser();
   }, []);
 
+  async function saveProfile(
+    profileData: Omit<UserProfile, "userId" | "updatedAt">,
+  ) {
+    if (!neonUser) {
+      throw new Error("User must be authenticated to save profile");
+    }
 
-  async function saveProfile(profileData: Omit<userProfiles, "userId"> | "updatedAt") {
-    if(!neonUser) throw new Error ("User must be authenticated to save profile")
-
-      await api
-    
+    await api.saveProfile(neonUser.id, profileData);
   }
 
   return (
